@@ -1,0 +1,10 @@
+*.pkl
+*.pth
+*.log
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+dist/
+build/
+.DS_Store

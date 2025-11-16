@@ -1,0 +1,47 @@
+# Sign Connector Training Configuration
+
+# Model settings
+model:
+  num_joints: 46
+  in_channels: 14  # 7D pose + 7D temporal difference
+  hidden_dim: 256
+  dropout: 0.2
+
+# Training settings
+training:
+  batch_size: 128
+  epochs: 500
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  scheduler:
+    type: "CosineAnnealingLR"
+    eta_min: 0.00001
+    T_max: 300
+  
+  # Early stopping
+  patience: 50
+  save_best_only: true
+  
+# Data settings
+data:
+  root_dir: "./sign_connector/data"
+  keypoints_file: "keypoints_3d_mesh.pkl"
+  train_pairs: "iso_clip_pairs.train"
+  val_pairs: "iso_clip_pairs.dev"
+  
+  # Joint indices to use
+  joint_indices: [3, 4, 6, 7, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+                  37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
+                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66]
+
+# Paths
+paths:
+  checkpoints: "./sign_connector/checkpoints"
+  logs: "./sign_connector/logs"
+  data: "./sign_connector/data"
+
+# Device
+device: "cuda:0"  # or "cpu"
+
+# Random seed
+seed: 42

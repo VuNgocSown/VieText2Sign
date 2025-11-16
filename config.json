@@ -1,0 +1,13 @@
+{
+  "text2gloss_model_path": "./models/text2gloss",
+  "connector_path": "./models/data/connector.pth",
+  "smplx_data_path": "./models/data/smplx_all.pkl",
+  "vn_dictionary_path": "./models/data/vn_dictionary.pkl",
+  "smplx_model_folder": "./models/data",
+  "blender_path": "blender",
+  "render_script_path": "./scripts/render_avatar.py",
+  "temp_dir": "./temp",
+  "output_dir": "./output",
+  "device": "cuda",
+  "fps": 30
+}

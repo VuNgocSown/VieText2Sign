@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.pyc
+.pytest_cache/
+dist/
+build/
+
+# Models and checkpoints (keep directory structure)
+models/*
+!models/.gitkeep
+pretrained_models/*
+!pretrained_models/.gitkeep
+checkpoints/*
+!checkpoints/.gitkeep
+
+# Data files (keep directory structure but ignore content)
+*.pkl
+*.npz
+*.xlsx
+*.csv
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# Ignore all files in data directories but keep the directories
+data/*
+!data/.gitkeep
+*/data/*
+!*/data/.gitkeep
+*/*/data/*
+!*/*/data/.gitkeep
+**/data/*
+!**/data/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Temp files
+temp/
+output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+._*
+
+# Environment
+.env
+venv/
+env/
+
