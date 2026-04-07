@@ -1,0 +1,15 @@
+model_checkpoint: facebook/mbart-large-50
+tokenizer_src_lang: vi_VN
+tokenizer_tgt_lang: vi_VN
+forced_bos_lang: vi_VN
+task_prefix: null
+description: mBART-large-50 (611M) [BASELINE]
+learning_rate: 2.0e-05
+num_epochs: 20
+batch_size: 16
+grad_accum_steps: 2
+warmup_ratio: 0.06
+weight_decay: 0.01
+label_smoothing: 0.1
+dropout_rate: 0.1
+max_length: 128

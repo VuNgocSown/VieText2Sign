@@ -1,0 +1,17 @@
+model_checkpoint: google/mt5-small
+tokenizer_src_lang: null
+tokenizer_tgt_lang: null
+forced_bos_lang: null
+task_prefix: 'translate Vietnamese to simplified Vietnamese: '
+description: mT5-small (300M) - Baseline nhẹ
+learning_rate: 0.0005
+num_epochs: 30
+batch_size: 32
+grad_accum_steps: 1
+warmup_ratio: 0.1
+weight_decay: 0.01
+label_smoothing: 0.0
+dropout_rate: 0.1
+max_length: 128
+fp16_override: false
+bf16_override: true

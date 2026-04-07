@@ -1,0 +1,17 @@
+model_checkpoint: facebook/nllb-200-distilled-600M
+tokenizer_src_lang: vie_Latn
+tokenizer_tgt_lang: vie_Latn
+forced_bos_lang: vie_Latn
+task_prefix: null
+description: NLLB-200-distilled-600M, chuyên dịch thuật
+learning_rate: 2.0e-05
+num_epochs: 20
+batch_size: 16
+grad_accum_steps: 2
+warmup_ratio: 0.06
+weight_decay: 0.01
+label_smoothing: 0.0
+dropout_rate: 0.1
+max_length: 128
+fp16_override: true
+bf16_override: false

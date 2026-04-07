@@ -12,6 +12,7 @@ import logging
 from tqdm import tqdm
 from datetime import datetime
 import yaml
+import wandb
 
 from .model import SignConnector
 from .dataset import ConnectorDataset, remap_skeletons, SKELETONS
@@ -76,9 +77,22 @@ def train_connector(config_path=None):
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
     
+    # Initialize WandB
+    wandb.login(key="5914148add1b48d1390cb8da8d99319e5cc0b94c")
+    wandb.init(
+        project="sign-connector",
+        name="sign_connector_text2sign",
+        config={
+            "model": config['model'],
+            "training": config['training'],
+            "seed": config['seed'],
+            "device": config['device']
+        }
+    )
+    
     # Setup logging
     logger = setup_logging(config['paths']['logs'])
-    logger.info("🚀 Training Sign Connector Model...")
+    logger.info(" Training Sign Connector Model...")
     logger.info(f"Config: {config_path}")
     
     # Set seed
@@ -165,6 +179,16 @@ def train_connector(config_path=None):
             device, edge_index, edge_weight
         )
         
+        # Log to WandB
+        wandb.log({
+            "epoch": epoch,
+            "train_loss": train_loss,
+            "val_loss": val_loss,
+            "learning_rate": scheduler.get_last_lr()[0],
+            "best_val_loss": best_val,
+            "best_epoch": best_ep
+        })
+        
         # Save best model
         if val_loss < best_val:
             best_val = val_loss
@@ -177,7 +201,10 @@ def train_connector(config_path=None):
                 'val_loss': val_loss,
                 'config': config
             }, fname)
-            logger.info(f"✅ Saved best model: {fname}")
+            logger.info(f" Saved best model: {fname}")
+            
+            # Save model to WandB
+            wandb.save(fname)
             
             if ckpt_q.full():
                 old_file = ckpt_q.get()
@@ -190,7 +217,11 @@ def train_connector(config_path=None):
             f"Val: {val_loss:.6f} | Best: {best_val:.6f} (Ep {best_ep})"
         )
     
-    logger.info(f"✅ Training completed! Best validation loss: {best_val:.6f} at epoch {best_ep}")
+    logger.info(f" Training completed! Best validation loss: {best_val:.6f} at epoch {best_ep}")
+    
+    # Finish WandB run
+    wandb.finish()
+    
     return best_val, best_ep
 
 

@@ -48,7 +48,9 @@ def rouge(references, hypotheses, level='word'):
 
 
 def token_accuracy(references, hypotheses, level='word'):
-    """Position-based token matching accuracy (0-100)"""
+    """Position-based token matching accuracy (0-100).
+    Mẫu số là max(len(hyp), len(ref)) để tránh inflate khi predict ngắn hơn reference.
+    """
     correct_tokens = 0
     all_tokens = 0
     split_char = ' ' if level in ['word', 'bpe'] else ''
@@ -56,7 +58,9 @@ def token_accuracy(references, hypotheses, level='word'):
     for hyp, ref in zip(hypotheses, references):
         hyp_tokens = hyp.split(split_char) if split_char else list(hyp)
         ref_tokens = ref.split(split_char) if split_char else list(ref)
-        all_tokens += len(hyp_tokens)
+        # Dùng max length để penalize cả khi predict ngắn lẫn dài hơn reference
+        max_len = max(len(hyp_tokens), len(ref_tokens))
+        all_tokens += max_len
         correct_tokens += sum(1 for h, r in zip(hyp_tokens, ref_tokens) if h == r)
     
     return (correct_tokens / all_tokens) * 100 if all_tokens > 0 else 0.0

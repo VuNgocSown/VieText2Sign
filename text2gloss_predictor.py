@@ -31,7 +31,26 @@ class Text2GlossPredictor:
             ).to(self.device)
         
         self.model.eval()
-        print("Text2Gloss model loaded successfully")
+        
+        # Ấn định ngôn ngữ đích: chỉ cần với mBART/NLLB, None với mT5/MarianMT
+        if hasattr(self.tokenizer, 'lang_code_to_id') and 'vi_VN' in self.tokenizer.lang_code_to_id:
+            self.forced_bos_token_id = self.tokenizer.lang_code_to_id['vi_VN']
+            self.model.config.forced_bos_token_id = self.forced_bos_token_id
+        elif hasattr(self.tokenizer, 'convert_tokens_to_ids'):
+            # NLLB / token-based style
+            try:
+                tok_id = self.tokenizer.convert_tokens_to_ids('vie_Latn')
+                if tok_id != self.tokenizer.unk_token_id:
+                    self.forced_bos_token_id = tok_id
+                    self.model.config.forced_bos_token_id = tok_id
+                else:
+                    self.forced_bos_token_id = None
+            except Exception:
+                self.forced_bos_token_id = None
+        else:
+            self.forced_bos_token_id = None
+        
+        print(f"Text2Gloss model loaded (forced_bos_token_id={self.forced_bos_token_id})")
     
     def predict(self, text):
         """
@@ -56,7 +75,8 @@ class Text2GlossPredictor:
                 **inputs,
                 max_length=self.max_length,
                 num_beams=4,
-                early_stopping=True
+                early_stopping=True,
+                forced_bos_token_id=self.forced_bos_token_id,
             )
         
         gloss = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
@@ -86,7 +106,8 @@ class Text2GlossPredictor:
                 **inputs,
                 max_length=self.max_length,
                 num_beams=4,
-                early_stopping=True
+                early_stopping=True,
+                forced_bos_token_id=self.forced_bos_token_id,
             )
         
         glosses = [self.tokenizer.decode(output, skip_special_tokens=True) for output in outputs]

@@ -1,29 +1,52 @@
-"""Configuration for Text2Gloss training"""
 import torch
+import yaml
+from pathlib import Path
 
-# Model configuration
-MODEL_CHECKPOINT = "facebook/mbart-large-50"
-SOURCE_LANG = "vi_VN"
-TARGET_LANG = "vi_VN"
 
-# Data configuration
-DATA_FILE = "./text2gloss/data/Corpus-Vie-VSL-10K.xlsx"
-MAX_LENGTH = 128
-TEST_SPLIT = 0.1
-VAL_SPLIT = 0.1
+ACTIVE_EXPERIMENT = "nllb"
 
-# Training hyperparameters
-NUM_EPOCHS = 20
-LEARNING_RATE = 3e-5
-BATCH_SIZE = 32
-LABEL_SMOOTHING = 0.2
-DROPOUT_RATE = 0.3
+CONFIG_DIR = Path(__file__).parent / "configs"
 
-# System configuration
+
+def load_experiment_config(experiment_name: str) -> dict:
+    """Load experiment configuration from YAML file"""
+    config_file = CONFIG_DIR / f"{experiment_name}.yaml"
+    if not config_file.exists():
+        raise FileNotFoundError(f"Config file not found: {config_file}")
+    
+    with open(config_file, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+
+def get_active_config() -> dict:
+    """Get configuration for active experiment"""
+    return load_experiment_config(ACTIVE_EXPERIMENT)
+
+
+def list_available_experiments() -> list:
+    """List all available experiment configurations"""
+    return [f.stem for f in CONFIG_DIR.glob("*.yaml")]
+
+
+class Config:
+    def __init__(self, experiment_name: str = None):
+        if experiment_name is None:
+            experiment_name = ACTIVE_EXPERIMENT
+        
+        self.experiment_name = experiment_name
+        self.config = load_experiment_config(experiment_name)
+        
+        for key, value in self.config.items():
+            setattr(self, key, value)
+    
+    def __repr__(self):
+        return f"Config(experiment={self.experiment_name}, model={self.model_checkpoint})"
+
+
+DATA_DIR = Path(__file__).parent / "data"
+MODEL_SAVE_DIR = Path(__file__).parent.parent / "models" / "text2gloss"
+MODEL_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+NUM_WORKERS = 4
 SEED = 42
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-FP16 = True if DEVICE == "cuda" else False
-
-# Model output
-MODEL_OUTPUT_DIR = "./text2gloss/models/text2gloss_model"
-SAVE_TOTAL_LIMIT = 3
