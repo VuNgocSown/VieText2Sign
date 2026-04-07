@@ -3,7 +3,6 @@ tokenizer_src_lang: vie_Latn
 tokenizer_tgt_lang: vie_Latn
 forced_bos_lang: vie_Latn
 task_prefix: null
-description: NLLB-200-distilled-600M, chuyên dịch thuật
 learning_rate: 2.0e-05
 num_epochs: 20
 batch_size: 16

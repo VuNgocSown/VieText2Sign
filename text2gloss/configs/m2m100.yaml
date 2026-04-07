@@ -2,7 +2,6 @@ model_checkpoint: facebook/m2m100_418M
 tokenizer_src_lang: vi
 tokenizer_tgt_lang: vi
 forced_bos_lang: vi
-description: M2M-100 418M, chuyên machine translation
 learning_rate: 2.0e-05
 num_epochs: 20
 batch_size: 16

@@ -79,15 +79,15 @@ if __name__ == '__main__':
                     bpy.context.view_layer.objects.active = armature_obj
                     bpy.ops.object.smplx_load_pose(filepath=fname)
                 else:
-                    print(f"⚠️ Warning: No SMPL-X Armature object found.")
+                    print(f" Warning: No SMPL-X Armature object found.")
                     continue
                         
             except Exception as e:
-                print(f"❌ Error loading pose {fname}: {e}")
+                print(f" Error loading pose {fname}: {e}")
                 continue
                 
             bpy.ops.render.render()
             out_file = os.path.join(img_dir, f"images{i:04d}.png")
             bpy.data.images["Render Result"].save_render(out_file)
             # Bật dòng dưới nếu bạn muốn thấy log lưu file
-            # print(f"✅ Saved: {out_file}")
+            # print(f" Saved: {out_file}")

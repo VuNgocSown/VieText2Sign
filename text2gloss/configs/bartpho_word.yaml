@@ -2,7 +2,6 @@ model_checkpoint: vinai/bartpho-word
 tokenizer_src_lang: null
 tokenizer_tgt_lang: null
 forced_bos_lang: null
-description: BARTpho-word, thuần Việt (396M) ⭐ Ưu tiên
 learning_rate: 1.0e-05
 num_epochs: 20
 batch_size: 16

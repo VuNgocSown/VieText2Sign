@@ -2,7 +2,6 @@ model_checkpoint: VietAI/vit5-base
 tokenizer_src_lang: null
 tokenizer_tgt_lang: null
 forced_bos_lang: null
-description: ViT5-base, T5 thuần Việt (250M) ⭐ Nhẹ, nhanh
 learning_rate: 5.0e-05
 num_epochs: 25
 batch_size: 32

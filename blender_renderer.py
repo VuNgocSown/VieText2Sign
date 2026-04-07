@@ -21,10 +21,10 @@ class BlenderRenderer:
             import bpy
             self.bpy = bpy
             self.bpy_available = True
-            print("✓ Blender Python API (bpy) available")
+            print(" Blender Python API (bpy) available")
         except ImportError:
             self.bpy_available = False
-            print("✗ Blender Python API (bpy) not available")
+            print(" Blender Python API (bpy) not available")
             print("  Install with: pip install bpy==3.4.0")
     
     def render(self, motion_dir, output_dir, video_id='output'):
@@ -125,11 +125,11 @@ class BlenderRenderer:
                     bpy.context.view_layer.objects.active = armature_obj
                     bpy.ops.object.smplx_load_pose(filepath=motion_path)
                 else:
-                    print(f"  ⚠️ Warning: No SMPL-X Armature object found.")
+                    print(f"   Warning: No SMPL-X Armature object found.")
                     continue
                         
             except Exception as e:
-                print(f"  ❌ Error loading pose {motion_path}: {e}")
+                print(f"   Error loading pose {motion_path}: {e}")
                 continue
                 
             # Render
@@ -139,13 +139,13 @@ class BlenderRenderer:
             output_file = os.path.join(output_dir, f"{i:04d}.png")
             bpy.data.images["Render Result"].save_render(output_file)
             # Bật dòng dưới nếu bạn muốn thấy log lưu file
-            # print(f"✅ Saved: {output_file}")
+            # print(f" Saved: {output_file}")
             
             if (i + 1) % 10 == 0:
                 print(f"  Rendered {i+1}/{len(motion_files)} frames")
         
         # Count rendered images
         num_images = len([f for f in os.listdir(output_dir) if f.endswith('.png')])
-        print(f"✓ Rendered {num_images} images to {output_dir}")
+        print(f" Rendered {num_images} images to {output_dir}")
         
         return num_images

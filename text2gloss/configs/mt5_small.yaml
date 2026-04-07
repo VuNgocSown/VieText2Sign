@@ -3,7 +3,6 @@ tokenizer_src_lang: null
 tokenizer_tgt_lang: null
 forced_bos_lang: null
 task_prefix: 'translate Vietnamese to simplified Vietnamese: '
-description: mT5-small (300M) - Baseline nhẹ
 learning_rate: 0.0005
 num_epochs: 30
 batch_size: 32

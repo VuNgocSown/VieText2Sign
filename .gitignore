@@ -69,3 +69,4 @@ run_test.sh
 USAGE.txt
 sign_retrieval/retriever_old.py
 text2gloss/scripts/
+video_creator.py
